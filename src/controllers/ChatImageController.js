@@ -11,7 +11,9 @@ module.exports = {
       }
     });
 
-    if (!chat) res.status(404).json({ error: "Chat not found!", status: 404 });
+    if (!chat) {
+      return res.status(404).json({ error: "Chat not found!", status: 404 });
+    }
 
     const { filename: key, originalname: name, size } = req.file;
 
@@ -83,7 +85,9 @@ module.exports = {
     if(!chat) {
       return res.status(404).json({ error: "Chat not found!", status: 404 });
     }
-    if(!chat.chat_image) res.status(500).json({error: 'This chat not have chat images yet.', status: 500})
+    if(!chat.chat_image) {
+      return res.status(500).json({error: 'This chat not have chat images yet.', status: 500})
+    }
 
     await chat.chat_image.destroy();
 

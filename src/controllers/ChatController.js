@@ -89,7 +89,7 @@ module.exports = {
     });
 
     if (!chat_creator.chat_creator) {
-      res.status(500).json({
+      return res.status(500).json({
         error: "It's not possible put user in a chat without a creator!",
         status: 500,
       });
@@ -119,8 +119,9 @@ module.exports = {
   async allIndex(req, res) {
     const chats = await Chat.findAll();
 
-    if (!chats || !chats.length)
-      res.status(404).json({ error: "Chats not found!", status: 404 });
+    if (!chats || !chats.length) {
+      return res.status(404).json({ error: "Chats not found!", status: 404 });
+    }
 
     return res.json(chats);
   },
@@ -159,11 +160,12 @@ module.exports = {
       },
     });
 
-    if (!chat_creator.chat_creator)
-      res.status(500).json({
+    if (!chat_creator.chat_creator){
+      return res.status(500).json({
         error: "It's not possible remove user from chat without a creator!",
         status: 500,
       });
+    }
 
     const user = await User.findByPk(user_id);
 
@@ -203,12 +205,13 @@ module.exports = {
       return res.status(404).json({ error: "Chat not found!", status: 404 });
     }
 
-    if (!chat_creator.chat_creator)
-      res.status(500).json({
+    if (!chat_creator.chat_creator){
+      return res.status(500).json({
         error:
           "It's not possible update chat without a creator, user not found!",
         status: 500,
       });
+    }
 
     if (
       chat_creator.chat_creator.email == email &&
