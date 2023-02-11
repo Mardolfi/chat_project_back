@@ -94,4 +94,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3333, () => console.log("Server in running on 3333"));
+server.listen(process.env.PORT || 3333, () => console.log(`Server in running on ${process.env.PORT || 3333}`));
