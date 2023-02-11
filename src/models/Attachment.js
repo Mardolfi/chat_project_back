@@ -1,7 +1,10 @@
 const { Model, DataTypes } = require("sequelize");
-const fs = require("fs");
-const path = require("path");
-const {promisify} = require("util");
+const aws = require("aws-sdk");
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 class Attachment extends Model {
   static init(connection) {
@@ -15,9 +18,10 @@ class Attachment extends Model {
       {
         hooks: {
           beforeDestroy(attachment) {
-            return promisify(fs.unlink)(
-              path.resolve(__dirname, "..", "..", "tmp", "uploads", attachment.key)
-            );
+            return s3.deleteObject({
+              Bucket: 'upload-chat-app',
+              Key: attachment.key
+            }).promise()
           },
         },
         sequelize: connection,

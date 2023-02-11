@@ -15,13 +15,13 @@ module.exports = {
       return res.status(404).json({ error: "Chat not found!", status: 404 });
     }
 
-    const { filename: key, originalname: name, size } = req.file;
+    const { key, originalname: name, size, location: url } = req.file;
 
     const file = {
       name,
       key,
       size,
-      url: `http://localhost:3333/files/${key}`,
+      url,
       chat_id: parseInt(id),
     };
 
